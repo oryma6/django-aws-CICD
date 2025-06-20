@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+    </head>
+    <body>
+        <h1>Welcome, {{ request.user.first_name }}</h1>
+        <ul>
+            <li>Username: {{ request.user.username }}</li>
+            <li>Email: {{ request.user.email }}</li>
+        </ul>
+
+        <a href="{% url 'logout' %}">Log Out</a>
+
+        <table>
+            <thead>
+                <tr>
+                    <td colspan="5">My Tasks</td>
+                </tr>
+                <th>
+                    <td>Completed</td>
+                    <td>Task</td>
+                    <td>Project</td>
+                    <td>Due Date</td>
+                    <td>Description</td>
+                </th>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="is_completed" {% if task.is_completed %}checked{% endif %}>
+                        </td>
+
+                        <td>{{ task.title }}</td>
+
+                        <td>
+                            {% if task.project %}
+                                <a href="">{{ task.project.name }}</a>
+                            {% else %}
+                                <button>＋</button>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if task.due_date %}
+                                {{ task.due_date|date:"Y/m/d" }}
+                            {% else %}
+                                <button>＋</button>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {{ task.description|truncatechars:40 }}
+                        </td>
+
+                        <td>
+                            <a href="">Edit</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">No tasks</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body> 
+</html>
