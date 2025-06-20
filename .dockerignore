@@ -1,0 +1,28 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Git and VCS
+.git/
+.gitignore
+
+# Virtualenv
+venv/
+env/
+ENV/
+
+# Local dev settings
+.env
+*.sqlite3
+
+# IDE/project files
+.vscode/
+.idea/
+
+# MacOS/Windows artifacts
+.DS_Store
+Thumbs.db
+
+# Dockerfiles that aren't needed in prod
+Dockerfile.dev
+docker-compose.override.yml

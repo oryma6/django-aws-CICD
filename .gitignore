@@ -1,0 +1,31 @@
+# Bytecode and cache
+__pycache__/
+*.py[cod]
+
+# Virtualenv
+venv/
+env/
+ENV/
+*.egg-info/
+pip-log.txt
+
+# Environment variables
+.env
+
+# SQLite (if ever used)
+*.sqlite3
+
+# Django static/media files (if not version-controlled)
+staticfiles/
+media/
+
+# VSCode & IDE settings
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Docker artifacts
+*.log
