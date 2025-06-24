@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-b9y#)xeo)+7s3)26x-$d_19hql5(lb7pkttr5(dx-uu+ysblm$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['takano-ryoma.online', 'http://35.79.40.252/']
 
 
 # Application definition
