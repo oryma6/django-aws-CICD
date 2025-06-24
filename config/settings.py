@@ -112,6 +112,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://takano-ryoma.online",
+    "https://www.takano-ryoma.online",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
