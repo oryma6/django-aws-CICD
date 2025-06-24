@@ -44,11 +44,15 @@ def login_view(request):
             return render(request, LOGIN_PAGE, {
                 "message": "Invalid credentials."
         })
-
-    if request.user.is_authenticated:
-        return redirect("home")
-    return render(request, LOGIN_PAGE)
-
+    try:
+        if request.user.is_authenticated:
+            return redirect("home")
+        return render(request, LOGIN_PAGE)
+    except:
+        return render(request, LOGIN_PAGE, {
+            "message": "Session Stopped"
+        })
+    
 def logout_view(request):
     logout(request)
     return render(request, LOGIN_PAGE, {
