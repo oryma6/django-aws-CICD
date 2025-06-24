@@ -73,17 +73,26 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'cashtrack',
+#         'USER': 'postgres',
+#         'PASSWORD': 'pass',
+#         'HOST': 'db',  # Docker service name
+#         'PORT': '5432',
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cashtrack',
-        'USER': 'postgres',
-        'PASSWORD': 'pass',
-        'HOST': 'db',  # Docker service name
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB', 'cashtrack'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'pass'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
