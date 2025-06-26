@@ -5,6 +5,7 @@ __pycache__/
 # Git and VCS
 .git/
 .gitignore
+.github
 
 # Virtualenv
 venv/
@@ -26,3 +27,7 @@ Thumbs.db
 # Dockerfiles that aren't needed in prod
 Dockerfile.dev
 docker-compose.override.yml
+
+# Github Actions keys
+deploy_key_cicd
+deploy_key_cicd.pub

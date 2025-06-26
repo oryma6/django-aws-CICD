@@ -1,0 +1,27 @@
+name: CD - Deploy to EC2
+
+on:
+  workflow_dispatch: # manual trigger via GitHub actions UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production # requires approval if configured in repo settings
+
+    steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          ssh -i ~/.ssh/id_ed25519 ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/django-aws-CICD
+            git pull origin main
+            docker-compose down
+            docker-compose up --build -d
+          EOF

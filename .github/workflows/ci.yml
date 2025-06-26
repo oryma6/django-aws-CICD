@@ -1,29 +1,54 @@
-name: Deploy to EC2
+name: CI - Django Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main] # run this workflow on push to main branch
+  pull_request:
+    branches: [main] # also run on pull requests to main
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >- # health check to wait for DB to be ready
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }} # used by Django settings
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      DB_HOST: localhost # Important: no Docker, so use localhost
+      DEBUG: False
+      SECRET_KEY: test-secret # used by Django to validate cryptographic signing (replace in prod)
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H 35.79.40.252 >> ~/.ssh/known_hosts
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.13
 
-      - name: SSH and deploy
+      - name: Install dependencies
         run: |
-          ssh -i ~/.ssh/id_ed25519 ubuntu@35.79.40.252 << 'EOF'
-            cd ~/django-aws-CICD
-            git pull origin main
-            docker-compose down
-            docker-compose up --build -d
-          EOF
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run migrations
+        run: python manage.py migrate
+
+      - name: Run tests
+        run: python manage.py test

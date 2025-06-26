@@ -4,11 +4,7 @@
         <title>Home</title>
     </head>
     <body>
-        <h1>Welcome, {{ request.user.first_name }}</h1>
-        <ul>
-            <li>Username: {{ request.user.username }}</li>
-            <li>Email: {{ request.user.email }}</li>
-        </ul>
+        <h1>Welcome, {{ request.user.username }}</h1>
 
         <a href="{% url 'logout' %}">Log Out</a>
 

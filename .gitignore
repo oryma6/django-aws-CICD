@@ -29,3 +29,7 @@ Thumbs.db
 
 # Docker artifacts
 *.log
+
+# Github Actions keys
+deploy_key_cicd
+deploy_key_cicd.pub
